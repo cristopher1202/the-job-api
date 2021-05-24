@@ -6,12 +6,12 @@ const express = require('express')
 const http = require('http')
 
 const config = require('./config/environment')
+const connectDB = require('./database')
 const expressConfig = require('./config/express')
 const routeConfig = require('./routes')
 
 // Connect to MongoDB
-
-
+connectDB()
 // Setup server
 const app = express()
 const server = http.createServer(app)
@@ -23,7 +23,9 @@ routeConfig(app)
 function startServer() {
   app.theJobsApi = server.listen(config.port, () => {
     console.log(
-      `Express server listening on http://${config.ip}:${config.port}, in ${app.get('env')} mode`
+      `Express server listening on http://${config.ip}:${
+        config.port
+      }, in ${app.get('env')} mode`
     )
   })
 }
