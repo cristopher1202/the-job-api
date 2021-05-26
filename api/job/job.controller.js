@@ -16,68 +16,69 @@ async function index(_, res) {
   try {
     const jobs = await Job.find().exec()
     console.log('ahsjkhfkjashf')
-    return jobs
+    return res.status(200).json(jobs)
   } catch (error) {
-    console.log(error)
+    res.status(500).send(error)
   }
 }
 
 /**
  * Creates a new job
  */
-async function create(req, res, post) {
+async function create(req, res, next) {
+  const job = req.body
   try {
-    const post = new Post(post)
-    await post.save()
-    return post
+    const newJob = new Job(job)
+    await newJob.save()
+    res.status(201).json(newJob)
   } catch (error) {
-    console.log(error)
+    res.status(500).send(error)
   }
 }
 
 /**
  * Get a single job
  */
-async function show(req, res, id) {
-  const { id: jobId } = req.params
+async function show(req, res, next) {
+  const { id } = req.params
 
   try {
-    const post = await Post.findById(id).exec()
+    const job = await Post.findById(id).exec()
 
-    return post
+    res.status(200).json(job)
   } catch (error) {
-    console.log(error)
+    res.status(500).send(error)
   }
 }
 
 /**
  * Deletes a job
  */
-async function destroy(req, res, id) {
-  const { id: jobId } = req.params
+async function destroy(req, res, next) {
+  const { id } = req.params
   try {
-    const post = await Post.findByIdAndDelete(id).exec()
+    const job = await Post.findByIdAndDelete(id).exec()
 
-    return post
+    res.status(200).json(job)
   } catch (error) {
-    console.log(error)
+    res.status(500).send(error)
   }
 }
 
 /**
  * Updates a job
  */
-async function update(req, res, post) {
-  const { id: jobId } = req.params
-
+async function update(req, res, next) {
+  const { id } = req.params
+  const job = req.body
   try {
-    const post = await Post.findByIdAndUpdate({ _id: id }, post, {
+    const job = await Post.findByIdAndUpdate({ _id: id }, job, {
       new: true,
     }).exec()
 
-    return post
+    res.status(200).json(job)
   } catch (error) {
-    console.log(error)
+    res.status(500).send(error)
   }
 }
 
